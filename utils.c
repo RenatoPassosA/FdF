@@ -5,12 +5,12 @@ size_t	ft_strlen(const char *str)
 	size_t	counter;
 
 	counter = 0;
-	while (str[counter] != '\0')
+	while (str && str[counter] != '\0')
 		counter++;
 	return (counter);
 }
 
-fdf	*lst_new(int xaxis, int z_value, int total_index, char color) //x, z, 
+fdf	*lst_new(int xaxis, int z_value, int total_index, char *color) //x, z, 
 {
 	fdf	*node;
 
@@ -19,8 +19,8 @@ fdf	*lst_new(int xaxis, int z_value, int total_index, char color) //x, z,
 		return (NULL);
 	node->x = xaxis;
 	node->z = z_value;
-    node->index = total_index;
-    node->color = color;
+    	node->index = total_index;
+    	node->color = color;
 	node->next = NULL;
 	return (node);
 }

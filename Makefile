@@ -1,7 +1,7 @@
 NAME = fdf
 CC = cc
 CCFLAGS = -Wall -Wextra -Werror
-SRC = fdf.o get_next_line.o get_next_line_utils.o split.o utils.o
+SRC = fdf.o get_next_line.o get_next_line_utils.o ft_split.o utils.o
 
 all: $(NAME)
 
