@@ -19,26 +19,42 @@ char *check_color(char *z)
     return (color);
 }
 
-fdf *parse_line(char *line, fdf *data, int yaxis, int *total_index) //NÃO ESTÁ RETORNANDO A LISTA CORRETAMENTE PARA A FUNÇÃO SUPERIOR
+fdf *set_node(int *index, char *z_content, int *total_index, int *yaxis)
+{
+    fdf *node;
+    char *color;
+
+    color = check_color(z_content);
+    node = lst_new(*index, ft_atol(z_content), *total_index, color);
+    node->y = *yaxis;
+    (*total_index)++;
+    (*index)++;
+    return (node);
+}
+
+fdf *parse_line(char *line, fdf *data, int yaxis, int *total_index)
 {
     char **z_content;
     int index;
-    char *color;
+    fdf *current;
+    fdf *new_node;
     
     index = 0;
     z_content = ft_split(line, ' ');
+    if (!data)
+        data = set_node(&index, z_content[index], total_index, &yaxis);
+    current = data;
+    while (current->next != NULL)
+        current = current->next;
     while (z_content[index] != NULL)
     {
-        color = check_color(z_content[index]);
-        data = lst_new(index, ft_atol(z_content[index]), *total_index, color);
-        data->y = yaxis;
-        (*total_index)++;
-        index++;
-        data = data->next;
+        new_node = set_node(&index, z_content[index], total_index, &yaxis);
+        current->next = new_node;
+        current = current->next;
     }
+    free(z_content);
     return (data);
 }
-
 
 fdf *read_map(char *map, fdf *data)
 {
@@ -73,7 +89,16 @@ int main(int ac, char **av)
         return (0);
     }
     data = read_map(av[1], data);
+    display(data);
 
+
+    /*while(data)
+    {
+        printf("%3d", data->z);
+        if (data->next && data->next->y > data->y)
+            printf("\n");
+        data = data->next;  
+    }*/
 	/*while(data)
 	{
 		printf("x: %d\n", data->x);
@@ -81,20 +106,9 @@ int main(int ac, char **av)
 		printf("z: %d\n", data->z);
 		printf("index: %d\n", data->index);
 		printf("color: %s\n", data->color);
-		printf("----------------------");
+		printf("----------------------\n");
 		data = data->next;
 	}*/
-
-
-
-    return (0);
-
+   return (0);
 
 }
-
-
-/*if (!data)
-            data = current;
-        else
-            current->next = data;
-        current = data;*/

@@ -19,8 +19,8 @@ fdf	*lst_new(int xaxis, int z_value, int total_index, char *color) //x, z,
 		return (NULL);
 	node->x = xaxis;
 	node->z = z_value;
-    	node->index = total_index;
-    	node->color = color;
+    node->index = total_index;
+    node->color = color;
 	node->next = NULL;
 	return (node);
 }

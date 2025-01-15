@@ -1,18 +1,19 @@
 NAME = fdf
 CC = cc
-CCFLAGS = -Wall -Wextra -Werror
-SRC = fdf.o get_next_line.o get_next_line_utils.o ft_split.o utils.o
+CCFLAGS = -Wall -Wextra -Werror -Imlx
+SRC = fdf.o get_next_line.o get_next_line_utils.o ft_split.o utils.o display.c
+MLX = mlx/libmlx.a -L/usr/lib -lXext -lX11 -g
 
 all: $(NAME)
 
 $(NAME): $(SRC)
-	$(CC) $(CCFLAGS) -o $(NAME) $(SRC) -g
+	$(CC) $(CCFLAGS) -o $(NAME) $(SRC) $(MLX) -g
 
 .o:.c
-	$(CC) $(CCFLAGS) -c $< -o $@
+	$(CC) $(CCFLAGS) -c $< -o $@ 
 
 compile:
-	gcc -Wall -Wextra -Werror -g -o fdf *.c
+	gcc -Wall -Wextra -Werror -Imlx -g -o fdf *.c
 
 clean:
 	rm -f $(SRC)
