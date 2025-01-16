@@ -12,15 +12,8 @@
 
 #define ZOOM 30
 
-/*
-#define WIDTH 1920
-#define HEIGHT 1080
-#define SCALE 20   // Scale factor to size the grid on the screen
-*/
 typedef struct fdf
 {
-    int y;
-    int x;
     int z;
     int index;
     char *color;
@@ -33,16 +26,18 @@ typedef struct	s_data {
 	int		bits_per_pixel;
 	int		line_length;
 	int		endian;
-    struct fdf *data;
+    int width;
+    int height;
+	//struct fdf *data;
 }				t_data;
 
 char		**ft_split(char const *s, char c);
 int	count_words(char *s, char c);
 long	ft_atol(char *s);
 char	*ft_substr(char *s, unsigned int start, size_t len);
-fdf	*lst_new(int xaxis, int z_value, int total_index, char *color);
+fdf	*lst_new(int z_value, int total_index, char *color);
 size_t	ft_strlen(const char *str);
-int	display(int width, int height);
+int	display(t_data *data, fdf *map);
 
 
 #endif

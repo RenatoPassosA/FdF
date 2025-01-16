@@ -10,14 +10,13 @@ size_t	ft_strlen(const char *str)
 	return (counter);
 }
 
-fdf	*lst_new(int xaxis, int z_value, int total_index, char *color) //x, z, 
+fdf	*lst_new(int z_value, int total_index, char *color)
 {
 	fdf	*node;
 
 	node = (fdf *)malloc(sizeof(fdf));
 	if (!node)
 		return (NULL);
-	node->x = xaxis;
 	node->z = z_value;
     node->index = total_index;
     node->color = color;

@@ -19,20 +19,19 @@ char *check_color(char *z)
     return (color);
 }
 
-fdf *set_node(int *index, char *z_content, int *total_index, int *yaxis)
+fdf *set_node(int *index, char *z_content, int *total_index)
 {
     fdf *node;
     char *color;
 
     color = check_color(z_content);
-    node = lst_new(*index, ft_atol(z_content), *total_index, color);
-    node->y = *yaxis;
+    node = lst_new(ft_atol(z_content), *total_index, color);
     (*total_index)++;
     (*index)++;
     return (node);
 }
 
-fdf *parse_line(char *line, fdf *data, int yaxis, int *total_index)
+fdf *parse_line(char *line, fdf *data, int *total_index)
 {
     char **z_content;
     int index;
@@ -42,13 +41,13 @@ fdf *parse_line(char *line, fdf *data, int yaxis, int *total_index)
     index = 0;
     z_content = ft_split(line, ' ');
     if (!data)
-        data = set_node(&index, z_content[index], total_index, &yaxis);
+        data = set_node(&index, z_content[index], total_index);
     current = data;
     while (current->next != NULL)
         current = current->next;
     while (z_content[index] != NULL)
     {
-        new_node = set_node(&index, z_content[index], total_index, &yaxis);
+        new_node = set_node(&index, z_content[index], total_index);
         current->next = new_node;
         current = current->next;
     }
@@ -56,48 +55,60 @@ fdf *parse_line(char *line, fdf *data, int yaxis, int *total_index)
     return (data);
 }
 
-fdf *read_map(char *map, fdf *data)
+fdf *read_map(char *file, fdf *map, t_data *data)
 {
     int fd;
     char *line;
     int yaxis;
     int total_index;
+    int xaxis;
 
     yaxis = 0;
     total_index = 0;
-    fd = open(map, O_RDONLY);
+    fd = open(file, O_RDONLY);
     if (fd == -1)
         return (NULL);
     while ((line = get_next_line(fd)) != NULL)
     {
-        data = parse_line(line, data, yaxis, &total_index);
+        map = parse_line(line, map, &total_index);
+        xaxis = count_words(line, ' ');
         free(line);
-        yaxis++; //aqui tenho o y maximo
+        yaxis++;
     }
     close(fd);
-    return (data);
+    data->height = yaxis;
+    data->width = xaxis;
+    return (map);
 }
 
 int main(int ac, char **av)
 {
-    fdf *data;
-    fdf *current;
-    int width;
-    int height;
+    fdf *map;
+    t_data data;
 
-    data = NULL;
+    map = NULL;
     if (ac != 2)
     {
         printf("Error");
         return (0);
     }
-    data = read_map(av[1], data);
-    current = data;
-    while(current->next != NULL)
-        current = current->next;
-    width = current->y;
-    height = current->x;
-    display(width, height);
+    map = read_map(av[1], map, &data);
+    
+   /* int counter = 0;
+    while(map)
+        {
+            printf("%3d", map->z);
+            counter++;
+            if (counter == data.height)
+                {
+                    printf("\n");
+                    counter = 0;
+                }
+                map = map->next;
+        }*/
+   
+
+    display(&data, map);
   
    
 

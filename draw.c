@@ -3,11 +3,11 @@
 
 
 
-void	my_mlx_pixel_put(t_data data, int x, int y, int color)
+void	my_mlx_pixel_put(t_data *data, int x, int y, int color)
 {
 	char	*dst;
 
-	dst = data.addr + (y * data.line_length + x * (data.bits_per_pixel / 8));
+	dst = data->addr + (y * data->line_length + x * (data->bits_per_pixel / 8));
 	*(unsigned int*)dst = color;
 }
 
@@ -24,7 +24,7 @@ int bigger(int a, int b)
     return (b);
 }
 
-void bresenham(float x, float y, float x1, float y1, t_data img)
+void bresenham(float x, float y, float x1, float y1, t_data *img)
 {
     float x_step;
     float y_step;
@@ -48,41 +48,39 @@ void bresenham(float x, float y, float x1, float y1, t_data img)
     }
 }
 
-void    draw(t_data img, int width, int height)
+void    draw(t_data *data)
 {
     int x;
     int y;
 
     y = 0;
-    while (y < width)
+    while (y < data->height)
     {
         x = 0;
-        while (x < height)
+        while (x < data->width)
         {
-            bresenham(x, y, x + 1, y, img);
-            bresenham(x, y, x, y + 1, img);
+            bresenham(x, y, x + 1, y, data);
+            bresenham(x, y, x, y + 1, data);
             x++;
         }
         y++;
     }
 }
 
-int	display(int width, int height)
+int	display(t_data *data, fdf *map)
 {
 	void	*mlx;
 	void	*mlx_win;
-	t_data	img;
+	
 
 	mlx = mlx_init();
 	mlx_win = mlx_new_window(mlx, 1920, 1080, "FdF!");
-	img.img = mlx_new_image(mlx, 1920, 1080);
-	img.addr = mlx_get_data_addr(img.img, &img.bits_per_pixel, &img.line_length,
-								&img.endian);
-   
-                                
-  	draw(img, width, height);
-    
-	mlx_put_image_to_window(mlx, mlx_win, img.img, 0, 0);
+	data->img = mlx_new_image(mlx, 1920, 1080);
+	data->addr = mlx_get_data_addr(data->img, &data->bits_per_pixel, &data->line_length,
+								&data->endian);                        
+  	draw(data);
+	mlx_put_image_to_window(mlx, mlx_win, data->img, 0, 0);
 	mlx_loop(mlx);
     return (0);
 }
+
