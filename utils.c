@@ -87,4 +87,3 @@ long	ft_atol(char *s)
 	}
 	return (0);
 }
-

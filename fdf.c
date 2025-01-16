@@ -7,7 +7,7 @@ char *check_color(char *z)
     int index;
 
     index = 0;
-    color = "0xFFFFFF";
+    color = "0xffffff";
     if (!ft_strchr(z, ','))
         color = ft_substr(color, 0, ft_strlen(color));
     else
@@ -72,7 +72,7 @@ fdf *read_map(char *map, fdf *data)
     {
         data = parse_line(line, data, yaxis, &total_index);
         free(line);
-        yaxis++;
+        yaxis++; //aqui tenho o y maximo
     }
     close(fd);
     return (data);
@@ -81,6 +81,9 @@ fdf *read_map(char *map, fdf *data)
 int main(int ac, char **av)
 {
     fdf *data;
+    fdf *current;
+    int width;
+    int height;
 
     data = NULL;
     if (ac != 2)
@@ -89,17 +92,28 @@ int main(int ac, char **av)
         return (0);
     }
     data = read_map(av[1], data);
-    display(data);
+    current = data;
+    while(current->next != NULL)
+        current = current->next;
+    width = current->y;
+    height = current->x;
+    display(width, height);
+  
+   
 
+    
+   return (0);
 
-    /*while(data)
+}
+
+/* while(data)
     {
         printf("%3d", data->z);
         if (data->next && data->next->y > data->y)
             printf("\n");
         data = data->next;  
-    }*/
-	/*while(data)
+    }
+	while(data)
 	{
 		printf("x: %d\n", data->x);
 		printf("y: %d\n", data->y);
@@ -109,6 +123,3 @@ int main(int ac, char **av)
 		printf("----------------------\n");
 		data = data->next;
 	}*/
-   return (0);
-
-}

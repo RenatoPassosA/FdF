@@ -1,7 +1,7 @@
 NAME = fdf
 CC = cc
 CCFLAGS = -Wall -Wextra -Werror -Imlx
-SRC = fdf.o get_next_line.o get_next_line_utils.o ft_split.o utils.o display.c
+SRC = fdf.o get_next_line.o get_next_line_utils.o ft_split.o utils.o draw.o
 MLX = mlx/libmlx.a -L/usr/lib -lXext -lX11 -g
 
 all: $(NAME)

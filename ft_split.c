@@ -1,6 +1,6 @@
 #include "fdf.h"
 
-static int	count_words(char *s, char c)
+int	count_words(char *s, char c)
 {
 	int	index;
 	int	counter;
